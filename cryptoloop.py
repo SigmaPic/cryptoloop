@@ -29,12 +29,12 @@ class AESCipher:
                 
                 while True:
                     sector_data = f.read(AESCipher.SECTOR_SIZE)
-                    
-                    if len(sector_data) != AESCipher.SECTOR_SIZE:
-                        break
 
-                    out.write(transfer_func(sector_data, sector_id))
+                    if len(sector_data) == 0:
+                        break
                     
+                    sector_data = sector_data.ljust(AESCipher.SECTOR_SIZE, '\0')
+                    out.write(transfer_func(sector_data, sector_id))                    
                     sector_id += 1
         
     def decrypt_sector(self, sector_data, sector_id):
